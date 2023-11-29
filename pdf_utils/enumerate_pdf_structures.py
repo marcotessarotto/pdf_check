@@ -10,6 +10,15 @@ def enumerate_pdf_structures(pdf_path):
         metadata = reader.metadata
         print(f"Document Metadata: {metadata}")
 
+        # Access the XMP metadata
+        xmp_metadata = reader.metadata.xmp_metadata
+
+        if xmp_metadata:
+            print("XMP Metadata:")
+            print(xmp_metadata)
+        else:
+            print("No XMP metadata found.")
+
         # Enumerate pages and their contents
         num_pages = len(reader.pages)
         print(f"Number of Pages: {num_pages}")
@@ -33,7 +42,7 @@ def enumerate_pdf_structures(pdf_path):
 
             # Extract images - This is more complex and might not work for all PDFs
             print("Images:")
-            xObject = page.get("/Resources").get("/XObject").getObject()
+            xObject = page.get("/Resources").get("/XObject").get_object()
             if xObject:
                 for obj in xObject:
                     if xObject[obj].get("/Subtype") == "/Image":
